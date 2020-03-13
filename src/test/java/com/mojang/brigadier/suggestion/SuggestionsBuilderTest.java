@@ -4,6 +4,7 @@
 package com.mojang.brigadier.suggestion;
 
 import com.google.common.collect.Lists;
+import com.mojang.brigadier.LiteralMessage;
 import com.mojang.brigadier.context.StringRange;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +32,27 @@ public class SuggestionsBuilderTest {
         assertThat(result.getList(), equalTo(Lists.newArrayList(new Suggestion(StringRange.between(6, 7), "world!"))));
         assertThat(result.getRange(), equalTo(StringRange.between(6, 7)));
         assertThat(result.isEmpty(), is(false));
+    }
+
+    @Test
+    public void suggest_tooltip(){
+        final LiteralMessage str = new LiteralMessage("This is a message");
+        final Suggestions result = builder.suggest("world!", str).build();
+        assertThat(result.getList().get(0).getTooltip(), equalTo(str));
+    }
+
+    @Test
+    public void suggest_tooltip_branch(){
+        final LiteralMessage str = new LiteralMessage("This is a message");
+        final Suggestions result = builder.suggest("w", str).build();
+        assertThat(result.isEmpty(), is(true));
+    }
+
+    @Test
+    public void suggestInt_tooltip(){
+        final LiteralMessage str = new LiteralMessage("This is a message");
+        final Suggestions result = builder.suggest(2, str).build();
+        assertThat(result.getList().get(0).getTooltip(), equalTo(str));
     }
 
     @Test
@@ -86,4 +108,5 @@ public class SuggestionsBuilderTest {
         List<String> actual = result.getList().stream().map(Suggestion::getText).collect(Collectors.toList());
         assertThat(actual, equalTo(Lists.newArrayList( "11", "2", "22", "33", "3a", "4", "6", "8", "30", "32", "a", "a3", "b", "c")));
     }
+
 }

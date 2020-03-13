@@ -7,13 +7,28 @@ import com.mojang.brigadier.context.StringRange;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 public class SuggestionTest {
     @Test
     public void apply_insertation_start() {
         final Suggestion suggestion = new Suggestion(StringRange.at(0), "And so I said: ");
         assertThat(suggestion.apply("Hello world!"), equalTo("And so I said: Hello world!"));
+    }
+
+    @Test
+    public void suggest_getValue(){
+        final IntegerSuggestion suggestion = new IntegerSuggestion(StringRange.at(0), 2);
+        assertThat(suggestion.getValue(), equalTo(2));
+    }
+
+    @Test
+    public void suggest_equals(){
+        final IntegerSuggestion suggestion = new IntegerSuggestion(StringRange.at(0), 2);
+        assertTrue(suggestion.equals(suggestion));
+        assertFalse(suggestion.equals(new Suggestion(StringRange.at(6), "small")));
+        assertTrue(suggestion.equals(new IntegerSuggestion(StringRange.at(0), 2)));
+        assertFalse(suggestion.equals(new IntegerSuggestion(StringRange.at(0), 3)));
     }
 
     @Test
