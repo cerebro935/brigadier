@@ -13,6 +13,7 @@ version = project.hasProperty('buildNumber') ? "${project.majorMinor}.${project.
 buildscript {
     repositories {
         mavenCentral()
+        mavenLocal()
         maven {
             url "https://libraries.minecraft.net"
         }
@@ -23,7 +24,6 @@ buildscript {
         classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.6'
     }
 }
-
 repositories {
     maven {
         url "https://libraries.minecraft.net"
@@ -39,6 +39,8 @@ dependencies {
     testCompile 'com.google.guava:guava-testlib:26.0-jre'
     testCompile 'org.openjdk.jmh:jmh-core:1.21'
     annotationProcessor 'org.openjdk.jmh:jmh-generator-annprocess:1.21'
+    annotationProcessor 'com.google.errorprone:error_prone_core:2.3.3'
+    testAnnotationProcessor 'com.google.errorprone:error_prone_core:2.3.3'
 }
 
 pitest {
